@@ -17,6 +17,10 @@ npm i -g @nestjs/cli
 4. Levantar la base de datos
 ```
 docker-composer up -d
+
+para este paso debo tener instalado la imagen de mongo db
+
+ejemplo: docker pull mongo:5.0.0
 ```
 
 ## Stack usado
