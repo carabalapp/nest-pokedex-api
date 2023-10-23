@@ -14,7 +14,7 @@ $ npm install ó yarn install
 npm i -g @nestjs/cli
 ```
 
-4. Levantar el comando
+4. Levantar la base de datos
 ```
 docker-composer up -d
 ```
