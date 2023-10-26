@@ -4,14 +4,22 @@ import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { Pokemon } from './entities/pokemon.entity';
 import { Model, isValidObjectId } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PokemonService {
-
+  
+  private defaultLimit: number
   constructor(
     @InjectModel(Pokemon.name)
-    private readonly pokemonModel: Model<Pokemon>
-  ) { }
+    private readonly pokemonModel: Model<Pokemon>,
+
+    private readonly configService: ConfigService
+  ) {  
+    this.defaultLimit = this.configService.get('defaultLimit')
+    console.log(this.defaultLimit)
+  }
 
 
   async create(createPokemonDto: CreatePokemonDto) {
@@ -26,11 +34,16 @@ export class PokemonService {
 
   }
 
-  async findAll() {
+  async findAll(paginationDto: PaginationDto) {
 
     let pokemons: Pokemon[]
 
+    // Aqui decimos que si no viene limit u offser con un valor, entonces le asignamos por defecto los valores de abajo
+    // Pero en dado caso de que si vengan, entonces tomaran el valor que traigan en el DTO
+    const { limit = this.defaultLimit, offset = 0 } = paginationDto
     pokemons = await this.pokemonModel.find()
+    .limit(limit)
+    .skip(offset)
 
     if (!pokemons) throw new NotFoundException(`Not found pokemons`)
 
