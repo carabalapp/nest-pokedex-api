@@ -16,7 +16,7 @@ npm i -g @nestjs/cli
 
 4. Levantar la base de datos
 ```
-docker-composer up -d
+docker-compose up -d
 
 para este paso debo tener instalado la imagen de mongo db
 
@@ -35,3 +35,17 @@ curl --location 'localhost:3000/api/v2/seed'
 * NestJS
 * TablePlus
 * Docker
+
+
+# Production build docker
+
+1. Crear el archivo __.env.prod__
+2. Llenar las variables de entorno de pro
+3. Crear la nueva imagen
+```
+docker-compose -f docker-compose.prod.yaml --env-file .env.prod up --build
+```
+4. Correr la app sin hacer el build
+```
+docker-compose -f docker-compose.prod.yaml --env-file .env.prod up -d
+```
